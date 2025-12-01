@@ -1,0 +1,35 @@
+# ----------------------------------------
+# VS Code & Editor junk
+# ----------------------------------------
+.vscode/
+*.code-workspace
+
+# Competitive Programming Helper (CPH)
+.cph/
+
+# VS Code backup/temporary files
+*.*_*
+
+# ----------------------------------------
+# Build files
+# ----------------------------------------
+# Object files
+*.o
+*.obj
+
+# Compiled binaries
+a.out
+*.exe
+*.out
+
+# CMake, Makefile, cache dirs
+CMakeCache.txt
+CMakeFiles/
+Makefile
+build/
+
+# ----------------------------------------
+# OS files
+# ----------------------------------------
+.DS_Store
+Thumbs.db
