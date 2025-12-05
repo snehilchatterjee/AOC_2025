@@ -110,6 +110,20 @@ ll getAns(vector<ll>& vec,ll n){
     return ans;
 }
 
+ll getMax(ll idx,ll cnt,string& s,vector<vector<ll>>& dp){
+    if(idx==-1 || cnt==12) return 0;
+
+    if(dp[idx][cnt]!=-1) return dp[idx][cnt];
+
+    ll multipler=pow(10,cnt);
+    ll num=s[idx]-'0';
+    
+    ll pick=getMax(idx-1,cnt+1,s,dp)+num*multipler;
+    ll noPick=getMax(idx-1,cnt,s,dp);
+
+    return dp[idx][cnt]=max(pick,noPick);
+}
+
 int main() {
     ios::sync_with_stdio(false); // Fast IO
     cin.tie(NULL);
@@ -121,32 +135,12 @@ int main() {
     }
 
     ll ans=0;  
-
+    
     for(auto& s: vec){
         ll n=s.size();
-        ll maxIdx1=-1;
-        ll maxVal1=0;
-
-        for(ll i=0;i<n-1;i++){
-            if(maxVal1<(s[i]-'0')){
-                maxVal1=s[i]-'0';
-                maxIdx1=i;
-            }
-        }
-
-        ll maxIdx2=maxIdx1+1;
-        ll maxVal2=s[maxIdx2]-'0';
-
-        for(ll i=maxIdx1+1;i<n;i++){
-            if(maxVal2<(s[i]-'0')){
-                maxVal2=s[i]-'0';
-                maxIdx2=i;
-            }
-        }
-
-        ll val=(maxVal1*10)+maxVal2;
-        ans+=val;
-
+        vector<vector<ll>> dp(n,vector<ll>(13,-1));
+        ll tmpAns=getMax(n-1,0,s,dp);
+        ans+=tmpAns;
     }
 
     cout<<ans<<endl;
