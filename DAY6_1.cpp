@@ -126,7 +126,6 @@ int main() {
     ios::sync_with_stdio(false); // Fast IO
     cin.tie(NULL);
     
-    char ch;
     string str;
     vector<vector<string>> vec;
     while(getline(cin,str)){
