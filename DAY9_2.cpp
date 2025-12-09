@@ -110,6 +110,24 @@ ll getAns(vector<ll>& vec,ll n){
     return ans;
 }
 
+
+bool rectanglePossible(ll x1,ll y1,ll x2,ll y2,ll i,ll j,vector<vector<ll>>& vec){
+    if(y1<y2){
+        ll topLeft=vec[i][1];
+        ll bttmRight=vec[j][3];
+        if(topLeft<y2 || bttmRight>y1) return false;
+    }
+    else{
+        ll topRight=vec[j][0];
+        ll bttmLeft=vec[i][2];
+        if(topRight<y1 || bttmLeft>y2) return false;
+    
+    }
+
+    return true;
+}
+
+
 int main() {
     ios::sync_with_stdio(false); // Fast IO
     cin.tie(NULL);
@@ -120,16 +138,62 @@ int main() {
         vector<string> tempVec=split(str,',');
         vec.push_back({stoll(tempVec[0]),stoll(tempVec[1])});
     }
+
     ll n=vec.size();
+
+    sort(vec.begin(),vec.end());
+
+    vector<vector<ll>> rE(n,vector<ll>(4));
+    /*
+    rE -> relativeExtremum
+    rE[i][0] -> topRight
+    rE[i][1] -> topLeft
+    rE[i][2] -> bttmLeft
+    re[i][3] -> bttmRight
+    */
+
+
+    for(ll i=0;i<n;i++){
+        rE[i][0]=rE[i][1]=rE[i][2]=rE[i][3]=vec[i].second;
+        for(ll j=0;j<n;j++){
+            if(vec[j].first<=vec[i].first){
+                rE[i][1]=max(rE[i][1],vec[j].second);
+                rE[i][2]=min(rE[i][2],vec[j].second);
+            }
+            if(vec[j].first>=vec[i].first){
+                rE[i][0]=max(rE[i][0],vec[j].second);
+                rE[i][3]=min(rE[i][3],vec[j].second);
+            }
+            
+        }
+    }
+    
+    // print(vec);
+    // cout<<endl;
+    // print(rE);
+
+    // pair<ll,ll>& p1=vec[0];
+    // pair<ll,ll>& p2=vec[4];
+    // print(p1);
+    // print(p2);
+
+    // if(rectanglePossible(p1.first,p1.second,p2.first,p2.second,0,4,rE) || (p1.first==p2.first) || (p1.second==p2.second)){
+    //     cout<<"possible";
+    // }
+
+
+
     ll ans=0;
     for(ll i=0;i<n;i++){
         pair<ll,ll>& p1=vec[i];
         for(ll j=i+1;j<n;j++){
             pair<ll,ll>& p2=vec[j];
-
-            ll x=abs(p1.first-p2.first)+1;
-            ll y=abs(p1.second-p2.second)+1;
-            ans=max(ans,x*y);
+            if(rectanglePossible(p1.first,p1.second,p2.first,p2.second,i,j,rE) || (p1.first==p2.first) || (p1.second==p2.second)){
+                ll x=abs(p1.first-p2.first)+1;
+                ll y=abs(p1.second-p2.second)+1;
+                
+                ans=max(ans,x*y);
+            }
         }
     }
 
