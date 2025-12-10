@@ -120,7 +120,7 @@ ll constructNumber(string str){
     return num;
 }
 
-ll getMin(ll idx,ll val,vector<vector<ll>>& switches,vector<vector<ll>>& dp){
+ll getMin(ll idx,ll val,vector<ll>& switches,vector<vector<ll>>& dp){
     if(idx==switches.size()){
         if(val==0) return 0;
         else return 1e9;
@@ -128,19 +128,14 @@ ll getMin(ll idx,ll val,vector<vector<ll>>& switches,vector<vector<ll>>& dp){
 
     if(dp[idx][val]!=-1) return dp[idx][val];
 
-    ll pickVal=val;
-    for(ll i=0;i<switches[idx].size();i++){
-        pickVal^=(1LL<<switches[idx][i]);
-    }
-
-    ll pick=getMin(idx+1,pickVal,switches,dp)+1;
+    ll pick=getMin(idx+1,val^switches[idx],switches,dp)+1;
     ll noPick=getMin(idx+1,val,switches,dp);
 
     return dp[idx][val]=min(pick,noPick);
 
 }
 
-ll sol(vector<vector<ll>>& switches,ll target){
+ll sol(vector<ll>& switches,ll target){
     ll n=switches.size();
 
     vector<vector<ll>> dp(n,vector<ll>(1024,-1));
@@ -160,11 +155,16 @@ int main() {
         vector<string> tempVec=split(str,' ');
         ll target=constructNumber(tempVec[0]);
         
-        vector<vector<ll>> switches(tempVec.size()-2);
+        vector<ll> switches;
         for(ll i=1;i<tempVec.size()-1;i++){
             string tempStr=string(tempVec[i].begin()+1,tempVec[i].end()-1);
-            vector<string> tempVec2=split(tempStr,',');   
-            for(auto s: tempVec2) switches[i-1].push_back(stoll(s));     
+            vector<string> tempVec2=split(tempStr,',');
+            ll val=0;
+            
+            for(auto s: tempVec2) val^=(1LL<<(stoll(s)));  
+            
+            switches.push_back(val);
+
         }
 
         ans+=sol(switches,target);
