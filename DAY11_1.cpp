@@ -142,7 +142,7 @@ ll dfs(string node,map<string,vector<string>>& adj,map<string,ll>& dp){
         paths+=dfs(nextNode,adj,dp);
     }
 
-    return paths;
+    return dp[node]=paths;
 
 }
 
