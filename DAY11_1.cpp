@@ -122,16 +122,6 @@ ll getAns(vector<ll>& vec,ll n){
     return ans;
 }
 
-ll constructNumber(string str){
-    ll num=0;
-    for(ll i=1;i<str.size()-1;i++){
-        if(str[i]=='#'){
-            num|=(1LL<<(i-1));
-        }
-    }
-    return num;
-}
-
 ll dfs(string node,map<string,vector<string>>& adj,map<string,ll>& dp){
     if(node.compare("out")==0) return 1;
 
